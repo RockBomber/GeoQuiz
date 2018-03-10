@@ -28,6 +28,7 @@ public class QuizActivity extends AppCompatActivity {
     };
 
     private int mCurrentIndex = 0;
+    private int mCorrectAnswers = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +62,13 @@ public class QuizActivity extends AppCompatActivity {
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-                updateQuestion();
+                mCurrentIndex += 1;
+                if (mCurrentIndex < mQuestionBank.length) {
+                    updateQuestion();
+                } else {
+                    String result = getString(R.string.result_template, mCorrectAnswers, mQuestionBank.length);
+                    Toast.makeText(QuizActivity.this, result, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -110,6 +116,8 @@ public class QuizActivity extends AppCompatActivity {
     private void updateQuestion() {
         int question = mQuestionBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(question);
+        mTrueButton.setEnabled(true);
+        mFalseButton.setEnabled(true);
     }
 
     private void checkAnswer(boolean userPressedTrue) {
@@ -119,11 +127,15 @@ public class QuizActivity extends AppCompatActivity {
 
         if (userPressedTrue == answerIsTrue) {
             messageResId = R.string.correct_toast;
+            mCorrectAnswers += 1;
         } else {
             messageResId = R.string.incorrect_toast;
         }
 
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
+        mTrueButton.setEnabled(false);
+        mFalseButton.setEnabled(false);
+
     }
 
 }
