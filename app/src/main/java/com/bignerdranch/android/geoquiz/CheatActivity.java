@@ -37,6 +37,9 @@ public class CheatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cheat);
 
+        TextView apiLevelTextView = (TextView) findViewById(R.id.api_level_text_view);
+        apiLevelTextView.setText(getString(R.string.api_level, Build.VERSION.SDK_INT));
+
         mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
 
         mAnswerTextView = (TextView) findViewById(R.id.answer_text_view);
